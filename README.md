@@ -2,7 +2,7 @@
 
 Code input for vue3 and nuxtjs 3. Code input for email or sms confirmations. Type or paste the code into multiple fields, get the string backwards.
 
-![Vue 3 code input](example.png)
+![Vue 3 code input](example2.png)
 
 ## Installing
 ```js
