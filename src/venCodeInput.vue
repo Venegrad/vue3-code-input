@@ -96,31 +96,37 @@ export default {
 }
 </script>
 
-<style lang="stylus">
-.code-field
-	box-sizing border-box
-	max-width 500px
-	*
-		box-sizing border-box
-	&__list
-		display flex
-		margin-left -4px
-		margin-right -4px
-	&__item
-		flex-grow 1
-		padding-left 4px
-		padding-right 4px
-	&__input
-		width 100%
-		height 50px
-		border 2px solid transparent
-		text-align center
-		background-color #222
-		color #fff
-		font-size 20px
-		font-weight 700
-		border-radius 12px
-		outline none
-		&:focus
-			border-color #777
+<style>
+.code-field {
+  box-sizing: border-box;
+  max-width: 500px;
+}
+.code-field * {
+  box-sizing: border-box;
+}
+.code-field__list {
+  display: flex;
+  margin-left: -4px;
+  margin-right: -4px;
+}
+.code-field__item {
+  flex-grow: 1;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+.code-field__input {
+  width: 100%;
+  height: 50px;
+  border: 2px solid transparent;
+  text-align: center;
+  background-color: #222;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 12px;
+  outline: none;
+}
+.code-field__input:focus {
+  border-color: #777;
+}
 </style>

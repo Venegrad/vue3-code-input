@@ -73,6 +73,7 @@
     "rimraf": "^3.0.2",
     "rollup": "^2.52.8",
     "rollup-plugin-postcss": "^4.0.0",
+    "rollup-plugin-stylus": "^1.0.4",
     "rollup-plugin-vue": "^6.0.0",
     "stylus": "^0.62.0",
     "stylus-loader": "^7.1.3",
