@@ -60,7 +60,9 @@ var script = {
   props: {
     disallow: {
       type: RegExp,
-      default: /[^a-zA-Z0-9]/g
+      default: () => {
+        return /[^a-zA-Z0-9]/g;
+      }
     },
     upper: {
       type: Boolean
