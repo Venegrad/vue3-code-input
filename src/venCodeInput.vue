@@ -45,7 +45,7 @@ export default {
 			if (!val) return null;
 			val = val.toString();
 			val = val.replace(new RegExp(this.disallow, 'g'), '');
-  		return this.upper ? val.toUpperCase() : val.toLowerCase();
+			return this.upper ? val.toUpperCase() : val.toLowerCase();
 		},
 		backEvent(e, ind) {
 			if(!e.target.value && this.$refs.codeInput[ind - 1]) this.$refs.codeInput[ind - 1].focus();
@@ -76,7 +76,9 @@ export default {
 	props: {
 		disallow: {
 			type: RegExp,
-			default: /[^a-zA-Z0-9]/g,
+			default: () => {
+				return /[^a-zA-Z0-9]/g
+			},
 		},
 		upper: {
 			type: Boolean,
