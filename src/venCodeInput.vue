@@ -20,8 +20,24 @@ export default {
 			innerValue: []
 		}
 	},
+
 	watch: {
 		modelValue() {
+			this.createArray()
+		},
+		innerValue: {
+			deep: true,
+			handler() {
+				this.$emit("update:modelValue", this.innerValue.join(''))
+				this.$emit("changed", this.innerValue.join(''))
+			}
+		}
+	},
+	created() {
+		this.createArray()
+	},
+	methods: {
+		createArray() {
 			let res = []
 			for(let i = 0; i < this.length; i++) {
 				if(this.modelValue && this.modelValue[i]) {
@@ -32,15 +48,6 @@ export default {
 			}
 			this.innerValue = res;
 		},
-		innerValue: {
-			deep: true,
-			handler() {
-				this.$emit("update:modelValue", this.innerValue.join(''))
-				this.$emit("changed", this.innerValue.join(''))
-			}
-		}
-	},
-	methods: {
 		filterStr(val) {
 			if (!val) return null;
 			val = val.toString();
