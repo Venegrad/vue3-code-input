@@ -1,6 +1,6 @@
 {
   "name": "@venegrad/vue3-code-input",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Code input for vue3 and nuxtjs 3. Code input for email or sms confirmations. Type or paste the code into multiple fields, get the string backwards.",
   "author": "venegrad <venegrad@gmail.com> (https://venegrad.com/)",
   "license": "MIT",

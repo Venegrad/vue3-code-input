@@ -1,11 +1,12 @@
 'use strict';var vue=require('vue');var script = {
   emits: ['update:modelValue', 'changed'],
-  data() {
-    return {
-      innerValue: []
-    };
+  mounted() {
+    if (this.inFocus && this.$refs.codeInput && this.$refs.codeInput.length) this.$refs.codeInput[0].focus();
   },
   watch: {
+    error() {
+      this.innerError = this.error;
+    },
     modelValue() {
       this.createArray();
     },
@@ -49,6 +50,7 @@
       if (this.$refs.codeInput[this.innerValue.length - 1]) this.$refs.codeInput[this.innerValue.length - 1].focus();
     },
     goChange(e, val, ind) {
+      this.innerError = null;
       if (!val) return;
       const vs = val.toString();
       const computedVal = vs[vs.length - 1];
@@ -71,6 +73,9 @@
     upper: {
       type: Boolean
     },
+    error: {
+      type: [String, Number]
+    },
     lower: {
       type: Boolean,
       default: true
@@ -78,21 +83,36 @@
     modelValue: {
       type: [String, Number]
     },
+    inFocus: {
+      type: Boolean,
+      default: true
+    },
     length: {
       type: [String, Number],
       default: 6
     }
+  },
+  data() {
+    return {
+      innerValue: [],
+      innerError: this.error
+    };
   }
 };const _hoisted_1 = {
-  class: "code-field"
-};
-const _hoisted_2 = {
   class: "code-field__list"
 };
-const _hoisted_3 = ["ind"];
-const _hoisted_4 = ["onUpdate:modelValue", "onInput", "onKeydown"];
+const _hoisted_2 = ["ind"];
+const _hoisted_3 = ["onUpdate:modelValue", "onInput", "onKeydown"];
+const _hoisted_4 = {
+  key: 0,
+  class: "code-field__error"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return vue.openBlock(), vue.createElementBlock("div", _hoisted_1, [vue.createElementVNode("div", _hoisted_2, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList([...Array($props.length).keys()], (item, ind) => {
+  return vue.openBlock(), vue.createElementBlock("div", {
+    class: vue.normalizeClass(["code-field", {
+      'error': $data.innerError
+    }])
+  }, [vue.createElementVNode("div", _hoisted_1, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList([...Array($props.length).keys()], (item, ind) => {
     return vue.openBlock(), vue.createElementBlock("div", {
       class: "code-field__item",
       ind: 'ss' + ind
@@ -101,14 +121,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       type: "text",
       "onUpdate:modelValue": $event => $data.innerValue[ind] = $event,
       onInput: $event => $options.goChange($event, $data.innerValue[ind], ind),
-      onPaste: _cache[0] || (_cache[0] = function () {
+      onClick: _cache[0] || (_cache[0] = $event => $data.innerError = null),
+      onPaste: _cache[1] || (_cache[1] = function () {
         return $options.pasteEvent && $options.pasteEvent(...arguments);
       }),
       onKeydown: vue.withKeys($event => $options.backEvent($event, ind), ["backspace"]),
       ref_for: true,
       ref: "codeInput"
-    }, null, 40, _hoisted_4), [[vue.vModelText, $data.innerValue[ind]]])], 8, _hoisted_3);
-  }), 256))])]);
+    }, null, 40, _hoisted_3), [[vue.vModelText, $data.innerValue[ind]]])], 8, _hoisted_2);
+  }), 256))]), $data.innerError ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_4, vue.toDisplayString($data.innerError), 1)) : vue.createCommentVNode("", true)], 2);
 }script.render = render;// Import vue component
 
 // Default export is installable instance of component.

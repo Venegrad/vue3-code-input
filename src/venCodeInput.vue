@@ -1,27 +1,22 @@
 <template lang="pug">
-.code-field
+.code-field(:class="{'error': innerError}")
   .code-field__list
     .code-field__item(v-for="(item, ind) in [...Array(length).keys()]" :ind="'ss'+ind")
-      input.code-field__input(
-        type="text" 
-        v-model="innerValue[ind]" 
-        @input="goChange($event, innerValue[ind], ind)" 
-        @paste="pasteEvent"
-        @keydown.backspace="backEvent($event, ind)" 
-        ref="codeInput"
-        )
+      input.code-field__input(type="text" v-model="innerValue[ind]" @input="goChange($event, innerValue[ind], ind)"  @click="innerError = null" @paste="pasteEvent" @keydown.backspace="backEvent($event, ind)"  ref="codeInput")
+  .code-field__error(v-if="innerError") {{ innerError }} 
 </template>
 
 <script>
 export default {
 	emits: ['update:modelValue', 'changed'],
-	data() {
-		return {
-			innerValue: []
-		}
+	
+	mounted() {
+		if(this.inFocus && this.$refs.codeInput && this.$refs.codeInput.length) this.$refs.codeInput[0].focus()
 	},
-
 	watch: {
+		error() {
+			this.innerError = this.error
+		},
 		modelValue() {
 			this.createArray()
 		},
@@ -66,6 +61,7 @@ export default {
 		},
 
 		goChange(e, val, ind) { 
+			this.innerError = null
 			if(!val) return
 			const vs = val.toString();
 			const computedVal = vs[vs.length - 1];
@@ -90,6 +86,9 @@ export default {
 		upper: {
 			type: Boolean,
 		},
+		error: {
+			type: [String, Number],
+		},
 		lower: {
 			type: Boolean,
 			default: true
@@ -97,11 +96,21 @@ export default {
 		modelValue: {
 			type: [String, Number]
 		},
+		inFocus: {
+			type: Boolean,
+			default: true
+		},
 		length: {
 			type: [String, Number],
 			default: 6
 		}
-	}
+	},
+	data() {
+		return {
+			innerValue: [],
+			innerError: this.error
+		}
+	},
 }
 </script>
 
@@ -110,6 +119,14 @@ export default {
   box-sizing: border-box;
   max-width: 500px;
 }
+
+.code-field__error {
+	text-align: center;
+	font-size: 12px;
+	margin: 10px;
+	color: #f23d34;
+}
+
 .code-field * {
   box-sizing: border-box;
 }
@@ -137,5 +154,9 @@ export default {
 }
 .code-field__input:focus {
   border-color: #777;
+}
+
+.code-field.error input {
+	border-color: #f23d34
 }
 </style>
