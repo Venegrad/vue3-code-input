@@ -1,4 +1,5 @@
-'use strict';var vue=require('vue');var script = {
+'use strict';var vue=require('vue');const regex = RegExp(/[0-9]+/g);
+var script = {
   emits: ['update:modelValue', 'changed'],
   mounted() {
     if (this.inFocus && this.$refs.codeInput && this.$refs.codeInput.length) this.$refs.codeInput[0].focus();
@@ -37,6 +38,7 @@
       if (!val) return null;
       val = val.toString();
       val = val.replace(new RegExp(this.disallow, 'g'), '');
+      if (this.numbersOnly) val = val.replace(new RegExp(/[^0-9]/g, 'g'), '');
       return this.upper ? val.toUpperCase() : val.toLowerCase();
     },
     backEvent(e, ind) {
@@ -44,12 +46,13 @@
     },
     pasteEvent(e) {
       e.preventDefault();
-      const copiedData = e.clipboardData.getData('text');
+      let copiedData = e.clipboardData.getData('text');
       const compiledArray = this.filterStr(copiedData).split('').slice(0, this.length);
       this.innerValue = compiledArray;
       if (this.$refs.codeInput[this.innerValue.length - 1]) this.$refs.codeInput[this.innerValue.length - 1].focus();
     },
     goChange(e, val, ind) {
+      if (this.numbersOnly && !regex.test(e.target.value)) e.target.value = null;
       this.innerError = null;
       if (!val) return;
       const vs = val.toString();
@@ -69,6 +72,10 @@
       default: () => {
         return /[^a-zA-Z0-9]/g;
       }
+    },
+    numbersOnly: {
+      type: Boolean,
+      default: true
     },
     upper: {
       type: Boolean
@@ -102,7 +109,7 @@
   class: "code-field__list"
 };
 const _hoisted_2 = ["ind"];
-const _hoisted_3 = ["onUpdate:modelValue", "onInput", "onKeydown"];
+const _hoisted_3 = ["type", "inputmode", "pattern", "onUpdate:modelValue", "onInput", "onKeydown"];
 const _hoisted_4 = {
   key: 0,
   class: "code-field__error"
@@ -118,7 +125,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       ind: 'ss' + ind
     }, [vue.withDirectives(vue.createElementVNode("input", {
       class: "code-field__input",
-      type: "text",
+      type: $props.numbersOnly ? 'number' : 'text',
+      min: "0",
+      inputmode: $props.numbersOnly ? 'numeric' : null,
+      pattern: $props.numbersOnly ? '[0-9]*' : '.*',
       "onUpdate:modelValue": $event => $data.innerValue[ind] = $event,
       onInput: $event => $options.goChange($event, $data.innerValue[ind], ind),
       onClick: _cache[0] || (_cache[0] = $event => $data.innerError = null),
@@ -128,7 +138,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onKeydown: vue.withKeys($event => $options.backEvent($event, ind), ["backspace"]),
       ref_for: true,
       ref: "codeInput"
-    }, null, 40, _hoisted_3), [[vue.vModelText, $data.innerValue[ind]]])], 8, _hoisted_2);
+    }, null, 40, _hoisted_3), [[vue.vModelDynamic, $data.innerValue[ind]]])], 8, _hoisted_2);
   }), 256))]), $data.innerError ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_4, vue.toDisplayString($data.innerError), 1)) : vue.createCommentVNode("", true)], 2);
 }script.render = render;// Import vue component
 

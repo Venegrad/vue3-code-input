@@ -1,5 +1,6 @@
-import { openBlock, createElementBlock, normalizeClass, createElementVNode, Fragment, renderList, withDirectives, withKeys, vModelText, toDisplayString, createCommentVNode } from 'vue';
+import { openBlock, createElementBlock, normalizeClass, createElementVNode, Fragment, renderList, withDirectives, withKeys, vModelDynamic, toDisplayString, createCommentVNode } from 'vue';
 
+const regex = RegExp(/[0-9]+/g);
 var script = {
   emits: ['update:modelValue', 'changed'],
   mounted() {
@@ -39,6 +40,7 @@ var script = {
       if (!val) return null;
       val = val.toString();
       val = val.replace(new RegExp(this.disallow, 'g'), '');
+      if (this.numbersOnly) val = val.replace(new RegExp(/[^0-9]/g, 'g'), '');
       return this.upper ? val.toUpperCase() : val.toLowerCase();
     },
     backEvent(e, ind) {
@@ -46,12 +48,13 @@ var script = {
     },
     pasteEvent(e) {
       e.preventDefault();
-      const copiedData = e.clipboardData.getData('text');
+      let copiedData = e.clipboardData.getData('text');
       const compiledArray = this.filterStr(copiedData).split('').slice(0, this.length);
       this.innerValue = compiledArray;
       if (this.$refs.codeInput[this.innerValue.length - 1]) this.$refs.codeInput[this.innerValue.length - 1].focus();
     },
     goChange(e, val, ind) {
+      if (this.numbersOnly && !regex.test(e.target.value)) e.target.value = null;
       this.innerError = null;
       if (!val) return;
       const vs = val.toString();
@@ -71,6 +74,10 @@ var script = {
       default: () => {
         return /[^a-zA-Z0-9]/g;
       }
+    },
+    numbersOnly: {
+      type: Boolean,
+      default: true
     },
     upper: {
       type: Boolean
@@ -106,7 +113,7 @@ const _hoisted_1 = {
   class: "code-field__list"
 };
 const _hoisted_2 = ["ind"];
-const _hoisted_3 = ["onUpdate:modelValue", "onInput", "onKeydown"];
+const _hoisted_3 = ["type", "inputmode", "pattern", "onUpdate:modelValue", "onInput", "onKeydown"];
 const _hoisted_4 = {
   key: 0,
   class: "code-field__error"
@@ -122,7 +129,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       ind: 'ss' + ind
     }, [withDirectives(createElementVNode("input", {
       class: "code-field__input",
-      type: "text",
+      type: $props.numbersOnly ? 'number' : 'text',
+      min: "0",
+      inputmode: $props.numbersOnly ? 'numeric' : null,
+      pattern: $props.numbersOnly ? '[0-9]*' : '.*',
       "onUpdate:modelValue": $event => $data.innerValue[ind] = $event,
       onInput: $event => $options.goChange($event, $data.innerValue[ind], ind),
       onClick: _cache[0] || (_cache[0] = $event => $data.innerError = null),
@@ -132,7 +142,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onKeydown: withKeys($event => $options.backEvent($event, ind), ["backspace"]),
       ref_for: true,
       ref: "codeInput"
-    }, null, 40, _hoisted_3), [[vModelText, $data.innerValue[ind]]])], 8, _hoisted_2);
+    }, null, 40, _hoisted_3), [[vModelDynamic, $data.innerValue[ind]]])], 8, _hoisted_2);
   }), 256))]), $data.innerError ? (openBlock(), createElementBlock("div", _hoisted_4, toDisplayString($data.innerError), 1)) : createCommentVNode("", true)], 2);
 }
 
