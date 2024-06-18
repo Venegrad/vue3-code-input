@@ -28,6 +28,7 @@ Css if needed:
 - `v-model`: v-model value (Array, ['John', 'Doe']), Dynamic v-model value
 - `inFocus`: (Boolean), Default = true, Add onMounted autofocus to first input of code
 - `error`: (String), Default = null, Add error class, and error text outer input
+- `numbersOnly`: (Boolean), Default = true, Make input type Number with mobile parametres
 
 ## Events
 All you need to do is attach a watch event to the v-model value, but if that's not enough for you, I've added a few more events.
@@ -42,6 +43,7 @@ All you need to do is attach a watch event to the v-model value, but if that's n
   :upper="true"
   :lower="false"
   :length="5"
+  :numbersOnly="true"
   :error="fieldError"
   :inFocus="true"
   :disallow="/[^a-zA-Z0-9]/g"
