@@ -6,6 +6,7 @@
 			:lower="false"
 			:length="5"
 			:disallow="/[^a-zA-Z0-9]/g"
+			:blurdone="true"
 			@changed="changed"
 		/>
 		<h2 class="gtitle">Values: </h2>

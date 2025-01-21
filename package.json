@@ -1,6 +1,6 @@
 {
   "name": "@venegrad/vue3-code-input",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Code input for vue3 and nuxtjs 3. Code input for email or sms confirmations. Type or paste the code into multiple fields, get the string backwards.",
   "author": "venegrad <venegrad@gmail.com> (https://venegrad.com/)",
   "license": "MIT",
@@ -45,7 +45,7 @@
     "*.css"
   ],
   "scripts": {
-    "serve": "vue-cli-service serve dev/serve.js",
+    "dev": "vue-cli-service serve dev/serve.js",
     "prebuild": "rimraf ./dist",
     "build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js",
     "build:ssr": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format cjs",

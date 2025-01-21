@@ -51,7 +51,11 @@ var script = {
       let copiedData = e.clipboardData.getData('text');
       const compiledArray = this.filterStr(copiedData).split('').slice(0, this.length);
       this.innerValue = compiledArray;
-      if (this.$refs.codeInput[this.innerValue.length - 1]) this.$refs.codeInput[this.innerValue.length - 1].focus();
+      if (this.blurdone && this.innerValue?.join('').length === this.length && document?.activeElement) {
+        document.activeElement.blur();
+      } else if (this.$refs.codeInput[this.innerValue.length - 1]) {
+        this.$refs.codeInput[this.innerValue.length - 1].focus();
+      }
     },
     goChange(e, val, ind) {
       if (this.numbersOnly && !regex.test(e.target.value)) e.target.value = null;
@@ -65,7 +69,11 @@ var script = {
       if (e.inputType === "deleteContentBackward") {
         return;
       }
-      if (this.$refs.codeInput[ind + 1] && e.target.value) this.$refs.codeInput[ind + 1].focus();
+      if (this.$refs.codeInput[ind + 1] && e.target.value) {
+        this.$refs.codeInput[ind + 1].focus();
+      } else if (this.blurdone && document) {
+        document.activeElement?.blur();
+      }
     }
   },
   props: {
@@ -99,6 +107,10 @@ var script = {
     length: {
       type: [String, Number],
       default: 6
+    },
+    blurdone: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

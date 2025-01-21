@@ -29,6 +29,7 @@ Css if needed:
 - `inFocus`: (Boolean), Default = true, Add onMounted autofocus to first input of code
 - `error`: (String), Default = null, Add error class, and error text outer input
 - `numbersOnly`: (Boolean), Default = true, Make input type Number with mobile parametres
+- `blurdone : (Bollean), Default = false, Focus out and close mobile keyboard, when user write done code`
 
 ## Events
 All you need to do is attach a watch event to the v-model value, but if that's not enough for you, I've added a few more events.
@@ -46,12 +47,13 @@ All you need to do is attach a watch event to the v-model value, but if that's n
   :numbersOnly="true"
   :error="fieldError"
   :inFocus="true"
+  :blurdone="false"
   :disallow="/[^a-zA-Z0-9]/g"
   @changed="changed"
 />
 ```
 
 ## Help links: 
-- If my solution was helpful to you, please give me a star on [Github](https://github.com/Venegrad/vue3-autocomplete) or get my day better with: 
+- If my solution was helpful to you, please give me a star on [Github](https://github.com/Venegrad/vue3-code-input) or get my day better with: 
 - USDT TRC20: `TKXybH3YoFvT5h8bQFLdkDBtiXA65y7xaB`
 - USDT ERC20: `0xc3efeB4825E350eE5D6B032Aa1dE144B09B5bB0D`
