@@ -4,7 +4,11 @@ const regex = RegExp(/[0-9]+/g);
 var script = {
   emits: ['update:modelValue', 'changed'],
   mounted() {
-    if (this.inFocus && this.$refs.codeInput && this.$refs.codeInput.length) this.$refs.codeInput[0].focus();
+    if (this.inFocus && this.$refs.codeInput && this.$refs.codeInput.length) {
+      setTimeout(() => {
+        this.$refs.codeInput[0].focus();
+      }, 500);
+    }
   },
   watch: {
     error() {
