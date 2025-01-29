@@ -4,7 +4,7 @@ const regex = RegExp(/[0-9]+/g);
 var script = {
   emits: ['update:modelValue', 'changed'],
   mounted() {
-    if (this.inFocus && this.$refs.codeInput && this.$refs.codeInput.length) {
+    if (this.inFocus && this.$refs.codeInput && this.$refs.codeInput.length && this.getOS() !== "iOS") {
       setTimeout(() => {
         this.$refs.codeInput[0].focus();
       }, 500);
@@ -29,6 +29,16 @@ var script = {
     this.createArray();
   },
   methods: {
+    getOS() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      if (/windows phone/i.test(userAgent)) return "Windows Phone";
+      if (/android/i.test(userAgent)) return "Android";
+      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return "iOS";
+      if (/Win/i.test(userAgent)) return "Windows";
+      if (/Mac/i.test(userAgent)) return "Mac";
+      if (/Linux/i.test(userAgent)) return "Linux";
+      return "Unknown";
+    },
     createArray() {
       let res = [];
       for (let i = 0; i < this.length; i++) {
